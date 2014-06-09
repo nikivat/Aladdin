@@ -38,4 +38,31 @@
         y: 501
     }, 2 * SPEED, repeat2);
 
+
+    // spaceship
+    var shipStage = new Kinetic.Stage({
+        container: 'ship',
+        width: 800,
+        height: 501
+    });
+
+    var shipLayer = new Kinetic.Layer();
+
+
+    var shipImg = new Image();
+    shipImg.src = 'img/spaceship.png';
+    var image = new Kinetic.Image({
+        x: 380,
+        y: 400,
+        image: shipImg,
+        width: 38,
+        height: 76
+    });
+
+
+    shipLayer.add(image);
+    shipStage.add(shipLayer);
+
+
+
 }());

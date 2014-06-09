@@ -5,17 +5,30 @@
     <meta charset="UTF-8">
     <title>Aladdin Team</title>
     <style type="text/css">
-    #canvas {
-        border: 3px solid yellow;
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    #wrapper {
+        display: block;
+        position: absolute;
+        top:0;
+        left: 0;
+        width: 800px;
+        height: 501px;
+        border: 1px solid yellow;
     }
     </style>
 </head>
 
 <body>
     <svg id="svg" width="800" height="501"></svg>
-    <canvas id="canvas" width="800" height="501"></canvas>
+    <div id="wrapper">
+        <div id="ship"></div>
+    </div>
 
     <script type="text/javascript" src="bower_components/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="bower_components/kineticjs/kinetic.min.js"></script>
     <script type="text/javascript" src="petia.js"></script>
     <script type="text/javascript" src="martin.js"></script>
     <script type="text/javascript" src="niki.js"></script>
