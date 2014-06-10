@@ -1,1 +1,5 @@
 *.log
+
+bower_components/*
+!bower_components/kineticjs/kinetic.js
+!bower-components/raphael/raphael.js
