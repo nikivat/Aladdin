@@ -1,4 +1,6 @@
-Aladdin Teamwork
-================
+Space Invaders
+==============
 
-Project repository for the JavaScript UI & DOM teamwork assignment of Team "Aladdin'2014"
+This ia a simple game, demonstrating the Canvas and SVG frameworks.
+
+The project is part of the "JavaScript UI & DOM" course curriculum, at the Telerik Software Academy - teamwork assignment for Team "Aladdin'2014".
