@@ -19,8 +19,9 @@
         renderShip();
         checkShots();
         renderAllShots();
+        checkMovementKeys();
 
-        setTimeout(gameLoop, 20);
+        setTimeout(gameLoop, 30);
     };
 
     // ship rendering
@@ -31,94 +32,57 @@
 
     // on user key pressed
 
-    var pressedKeys = {
-        38: false, // up arrow
-        37: false, // left arrow
-        40: false, //down arrow
-        39: false, //right arrow
-        32: false  //space
-    };
+    var keys = [];
 
-    function onKeyDown(e) {
-        for (var index in pressedKeys) {
-            if (e.keyCode == index) {
-                pressedKeys[e.keyCode] = true;
-            }
-        }
-
-        if (pressedKeys[38] && pressedKeys[37]) {
-            // go up-left
-            if (shipY >= SHIP_SPEED) {
-                shipY -= SHIP_SPEED;
-            }
-
-            if (shipX >= SHIP_SPEED) {
-                shipX -= SHIP_SPEED;
-            }
-        } else if (pressedKeys[38] && pressedKeys[39]) {
-            // go up-right
-            if (shipY >= SHIP_SPEED) {
-                shipY -= SHIP_SPEED;
-            }
-
-            if (shipX < canvas.width - shipWidth - 5) {
-                shipX += SHIP_SPEED;
-            }
-        } else if (pressedKeys[40] && pressedKeys[39]) {
-            // go down-right
-            if (shipY < canvas.height - shipHeight - 10) {
-                shipY += SHIP_SPEED;
-            }
-
-            if (shipX < canvas.width - shipWidth - 5) {
-                shipX += SHIP_SPEED;
-            }
-        } else if (pressedKeys[40] && pressedKeys[37]) {
-            // go down-left
-            if (shipY < canvas.height - shipHeight - 10) {
-                shipY += SHIP_SPEED;
-            }
-
-            if (shipX >= SHIP_SPEED) {
-                shipX -= SHIP_SPEED;
-            }
-        } else if (e.keyCode == 38) {
+    function checkMovementKeys() {
+        if (keys[38]) {
             //go up
             if (shipY >= SHIP_SPEED) {
                 shipY -= SHIP_SPEED;
             }
-        } else if (e.keyCode == 37) {
+        }
+
+        if (keys[37]) {
             //go left
             if (shipX >= SHIP_SPEED) {
                 shipX -= SHIP_SPEED;
             }
-        } else if (e.keyCode == 40) {
+        }
+
+        if (keys[40]) {
             //go down
             if (shipY < canvas.height - shipHeight - 10) {
                 shipY += SHIP_SPEED;
             }
-        } else if (e.keyCode == 39) {
+        }
+
+        if (keys[39]) {
             //go right
             if (shipX < canvas.width - shipWidth - 5) {
                 shipX += SHIP_SPEED;
             }
         }
+    }
 
-        if (pressedKeys[32]) {
+    function checkShootingKey() {
+        if (keys[32]) {
             fire();
         }
+
+        setTimeout(checkShootingKey, 100);
     }
 
-    function onKeyUp(e) {
-        for (var index in pressedKeys) {
-            if (e.keyCode == index) {
-                pressedKeys[e.keyCode] = false;
-            }
-        }
-    }
+    checkShootingKey();
 
-    document.onkeydown = onKeyDown;
-    document.onkeyup = onKeyUp;
+    //checkKeys();
+
+    addEventListener('keydown', function(e) {
+        keys[e.keyCode] = true;
+    });
+
+    addEventListener('keyup', function(e) {
+        keys[e.keyCode] = false;
+    });
 
     // shooting
 
