@@ -4,7 +4,7 @@
         SHIP_SPEED = 5,
         shipWidth = 30,
         shipHeight = 40,
-        shipX = canvas.width / 2 - shipWidth / 2, 
+        shipX = canvas.width / 2 - shipWidth / 2,
         shipY = canvas.height - shipHeight - 10,
         spaceShip = new Image(),
         SHOT_SIZE = 10,
@@ -14,13 +14,13 @@
     context.strokeStyle = "white";
     spaceShip.src = "img/spaceship.png";
 
-    window.onload = function renderPlayfield() {
+    window.onload = function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         renderShip();
-        moveShots();
+        checkShots();
         renderAllShots();
 
-        setTimeout(renderPlayfield, 20);
+        setTimeout(gameLoop, 20);
     };
 
     // ship rendering
@@ -31,31 +31,29 @@
 
     // on user key pressed
 
-    function onKeyDown(event) {
-        if (event.keyCode == 38) {
+    function onKeyDown(e) {
+        if (e.keyCode == 38) {
             if (shipY >= SHIP_SPEED) {
                 shipY -= SHIP_SPEED; //going up
             }
-        } else if (event.keyCode == 37) {
+        } else if (e.keyCode == 37) {
             if (shipX >= SHIP_SPEED) {
                 shipX -= SHIP_SPEED; //going left
             }
-        } else if (event.keyCode == 40) {
+        } else if (e.keyCode == 40) {
             if (shipY < canvas.height - shipHeight - 10) {
                 shipY += SHIP_SPEED; //going down
             }
-        } else if (event.keyCode == 39) {
+        } else if (e.keyCode == 39) {
             if (shipX < canvas.width - shipWidth - 5) {
                 shipX += SHIP_SPEED; //going right
             }
-        }
-
-        if (event.keyCode == 32) {
+        } else if (e.keyCode == 32) {
             fire();
         }
-    }
+    };
 
-    window.addEventListener('keydown', onKeyDown);
+    addEventListener('keydown', onKeyDown);
 
     // shooting
 
@@ -90,7 +88,7 @@
         }
     }
 
-    function moveShots() {
+    function checkShots() {
         for (var i = 0; i < allShots.length; i++) {
             if (allShots[i].y <= 0) {
                 allShots.splice(i, 1);
