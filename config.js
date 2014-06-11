@@ -1,0 +1,9 @@
+var consts = {
+    STARS_SPEED: 6000,
+    SHIP_SPEED: 5,
+    SHOT_SIZE: 10,
+    SHIP_WIDTH: 30,
+    SHIP_HEIGHT: 40,
+    GAME_WIDTH: 313,
+    GAME_HEIGHT: 500,
+};
