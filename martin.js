@@ -31,8 +31,20 @@
 
     // on user key pressed
 
-    function onKeyDown(e) {
-        if (e.keyCode == 38) {
+    var keys = {
+        38: false,
+        37: false
+    };
+
+    function checkKeys(e) {
+
+        if (keys[38] && keys[37]) {
+            alert('URA')
+        }
+
+
+
+        /* if (e.keyCode == 38) {
             if (shipY >= SHIP_SPEED) {
                 shipY -= SHIP_SPEED; //going up
             }
@@ -50,10 +62,27 @@
             }
         } else if (e.keyCode == 32) {
             fire();
-        }
+        } */
     };
 
+    function onKeyDown(e) {
+        for (var index in keys) {
+            if (e.keyCode == index) {
+                keys[e.keyCode] = true;
+            }
+        }
+    }
+
+    function onKeyUp(e) {
+        for (var index in keys) {
+            if (e.keyCode == index) {
+                keys[e.keyCode] = false;
+            }
+        }
+    }
+
     addEventListener('keydown', onKeyDown);
+    addEventListener('keyup', onKeyUp);
 
     // shooting
 
