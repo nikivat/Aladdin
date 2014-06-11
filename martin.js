@@ -31,58 +31,94 @@
 
     // on user key pressed
 
-    var keys = {
-        38: false,
-        37: false
-    };
-
-    function checkKeys(e) {
-
-        if (keys[38] && keys[37]) {
-            alert('URA')
-        }
-
-
-
-        /* if (e.keyCode == 38) {
-            if (shipY >= SHIP_SPEED) {
-                shipY -= SHIP_SPEED; //going up
-            }
-        } else if (e.keyCode == 37) {
-            if (shipX >= SHIP_SPEED) {
-                shipX -= SHIP_SPEED; //going left
-            }
-        } else if (e.keyCode == 40) {
-            if (shipY < canvas.height - shipHeight - 10) {
-                shipY += SHIP_SPEED; //going down
-            }
-        } else if (e.keyCode == 39) {
-            if (shipX < canvas.width - shipWidth - 5) {
-                shipX += SHIP_SPEED; //going right
-            }
-        } else if (e.keyCode == 32) {
-            fire();
-        } */
+    var pressedKeys = {
+        38: false, // up arrow
+        37: false, // left arrow
+        40: false, //down arrow
+        39: false, //right arrow
+        32: false  //space
     };
 
     function onKeyDown(e) {
-        for (var index in keys) {
+        for (var index in pressedKeys) {
             if (e.keyCode == index) {
-                keys[e.keyCode] = true;
+                pressedKeys[e.keyCode] = true;
             }
+        }
+
+        if (pressedKeys[38] && pressedKeys[37]) {
+            // go up-left
+            if (shipY >= SHIP_SPEED) {
+                shipY -= SHIP_SPEED;
+            }
+
+            if (shipX >= SHIP_SPEED) {
+                shipX -= SHIP_SPEED;
+            }
+        } else if (pressedKeys[38] && pressedKeys[39]) {
+            // go up-right
+            if (shipY >= SHIP_SPEED) {
+                shipY -= SHIP_SPEED;
+            }
+
+            if (shipX < canvas.width - shipWidth - 5) {
+                shipX += SHIP_SPEED;
+            }
+        } else if (pressedKeys[40] && pressedKeys[39]) {
+            // go down-right
+            if (shipY < canvas.height - shipHeight - 10) {
+                shipY += SHIP_SPEED;
+            }
+
+            if (shipX < canvas.width - shipWidth - 5) {
+                shipX += SHIP_SPEED;
+            }
+        } else if (pressedKeys[40] && pressedKeys[37]) {
+            // go down-left
+            if (shipY < canvas.height - shipHeight - 10) {
+                shipY += SHIP_SPEED;
+            }
+
+            if (shipX >= SHIP_SPEED) {
+                shipX -= SHIP_SPEED;
+            }
+        } else if (e.keyCode == 38) {
+            //go up
+            if (shipY >= SHIP_SPEED) {
+                shipY -= SHIP_SPEED;
+            }
+        } else if (e.keyCode == 37) {
+            //go left
+            if (shipX >= SHIP_SPEED) {
+                shipX -= SHIP_SPEED;
+            }
+        } else if (e.keyCode == 40) {
+            //go down
+            if (shipY < canvas.height - shipHeight - 10) {
+                shipY += SHIP_SPEED;
+            }
+        } else if (e.keyCode == 39) {
+            //go right
+            if (shipX < canvas.width - shipWidth - 5) {
+                shipX += SHIP_SPEED;
+            }
+        }
+
+        if (pressedKeys[32]) {
+            fire();
         }
     }
 
     function onKeyUp(e) {
-        for (var index in keys) {
+        for (var index in pressedKeys) {
             if (e.keyCode == index) {
-                keys[e.keyCode] = false;
+                pressedKeys[e.keyCode] = false;
             }
         }
     }
 
-    addEventListener('keydown', onKeyDown);
-    addEventListener('keyup', onKeyUp);
+    document.onkeydown = onKeyDown;
+    document.onkeyup = onKeyUp;
 
     // shooting
 
