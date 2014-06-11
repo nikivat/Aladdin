@@ -26,12 +26,12 @@ window.onload = function myfunction() {
             }
         }
         if (event.keyCode == 40) {
-            if (y < canvas.height - height) {
+            if (y < canvas.height - height - 10) {
                 y += speed; //going down
             }
         }
         if (event.keyCode == 39) {
-            if (x < canvas.width - width) {
+            if (x < canvas.width - 10 - width) {
                 x += speed; //going right
             }
         }
