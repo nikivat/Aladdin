@@ -22,7 +22,6 @@
         checkShots();
         renderAllShots();
         checkMovementKeys();
-        //createMeteors();///////////
         meteorsManager();//////////
 
         setTimeout(gameLoop, 30);
@@ -169,16 +168,16 @@
             this.render(0);
             oldPosY = this.y;
             this.y += consts.SHIP_SPEED;
-        }       
+        }
     }
 
     function createMeteors() {
-        var randomX = 0| Math.random() * consts.GAME_WIDTH;
+        var randomX = 0 | Math.random() * consts.GAME_WIDTH;
         var newMeteor = new Meteor(context, randomX, 5);
         allMeteors.push(newMeteor);
-        
+
         setTimeout(createMeteors, 1000);
-    }   
+    }
     createMeteors();
     function meteorsManager() {
         for (var i = 0, length = allMeteors.length; i < length; i++) {
@@ -186,13 +185,13 @@
         }
 
         checkForShotMeteors();
-        //checkForEscapedMeteors();
+        checkForEscapedMeteors();
     }
 
     function checkForShotMeteors() {
         for (var i = 0; i < allMeteors.length; i++) {
             for (var j = 0; j < allShots.length; j++) {
-                if (allShots[j].x >= allMeteors[i].x-30 && allShots[j].x <= (allMeteors[i].x + allMeteors[i].width) &&
+                if (allShots[j].x >= allMeteors[i].x - 30 && allShots[j].x <= (allMeteors[i].x + allMeteors[i].width) &&
                     allShots[j].y == (allMeteors[i].y + allMeteors[i].height)) {
                     allShots.splice(j, 1);
                     j--;
