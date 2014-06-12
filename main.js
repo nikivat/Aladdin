@@ -79,18 +79,42 @@
         checkShots();
     }
 
+    function gameEnd() {
+        for (var j = 0; j < allMeteors.length; j += 1) {
+            destroyMeteor(allMeteors[j].x, allMeteors[j].y);
+        }
+
+        context.fillStyle = "#D3FF87";
+        context.font = '40px san-serif';
+        context.textBaseline = 'bottom';
+        var text = 'Game over !',
+            i = 1;
+
+        function drawFinalText() {
+            context.fillText(text.substr(0, i), 50, 50);
+            i += 1;
+
+            if (i <= text.length) {
+                setTimeout(drawFinalText, 200);
+            }
+        }
+
+        drawFinalText();
+    }
+
     window.onload = function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         detectCollisions();
-        if (shipAlive) {
-            renderShip(0);
-        }
+        renderShip(0);
         renderAllMeteors();
         renderAllShots();
-
         checkMovementKeys();
 
-        setTimeout(gameLoop, 30);
+        if (shipAlive) {
+            setTimeout(gameLoop, 30);
+        } else {
+            gameEnd();
+        }
     };
 
     // SPACESHIP
@@ -108,7 +132,7 @@
         shipFrames += 1;
 
         if (shipFrames <= 6) {
-            setTimeout(destroyShip, 1000);
+            setTimeout(destroyShip, 400);
         }
     }
 
