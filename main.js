@@ -1,13 +1,18 @@
-(function() {
+(function () {
     var canvas = document.getElementById("ship"),
         context = canvas.getContext("2d"),
         shipX = canvas.width / 2 - consts.SHIP_WIDTH / 2,
         shipY = canvas.height - consts.SHIP_HEIGHT - 10,
         spaceShip = new Image(),
-        allShots = [];
+        allShots = [],
+        meteors = [],
+        keys = [],
+            meteorImage = new Image();
 
     context.strokeStyle = "white";
     spaceShip.src = "img/spaceship.png";
+    meteorImage.src = 'img/meteorit.png';
+
 
     // GAME ENGINE
 
@@ -28,8 +33,6 @@
     }
 
     // ON USER KEY PRESSED
-
-    var keys = {};
 
     function checkMovementKeys() {
         if (keys[38]) {
@@ -71,11 +74,11 @@
 
     checkShootingKey();
 
-    addEventListener('keydown', function(e) {
+    addEventListener('keydown', function (e) {
         keys[e.keyCode] = true;
     });
 
-    addEventListener('keyup', function(e) {
+    addEventListener('keyup', function (e) {
         keys[e.keyCode] = false;
     });
 
@@ -85,7 +88,7 @@
         this.x = x;
         this.y = y;
 
-        this.render = function() {
+        this.render = function () {
             context.beginPath();
             context.moveTo(this.x, this.y);
             context.lineTo(this.x, this.y - consts.SHOT_SIZE);
@@ -93,7 +96,7 @@
             context.stroke();
         };
 
-        this.move = function() {
+        this.move = function () {
             this.y -= consts.SHIP_SPEED;
         };
     }
@@ -121,4 +124,44 @@
         }
     }
 
+    function Meteor(ctx, posX, posY) {
+
+            var meteor = {},
+                frame = 0;
+
+            meteor.width = 60;
+            meteor.height = 60;
+            meteor.image = coinImage;
+
+            meteor.render = function (clipX) {
+                ctx.clearRect(posX, posY, meteor.width, meteor.height);
+                ctx.drawImage(
+                    this.image,
+                    clipX,
+                    0,
+                    this.width,
+                    this.height,
+                    posX,
+                    posY,
+                    this.width,
+                    this.height
+                );
+            };
+
+            meteor.animate = function () {
+                meteor.render(frame);
+                frame += 44;
+
+                if (frame >= 440) {
+                    frame = 0;
+                }
+
+                setTimeout(meteor.animate, 80);
+            };
+
+            return meteor;
+        }
+
+        //TO DO collision detector 
+    }
 })();
