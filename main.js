@@ -5,9 +5,9 @@
         shipY = canvas.height - consts.SHIP_HEIGHT - 10,
         spaceShip = new Image(),
         allShots = [],
-        meteors = [],
+        allMeteors = [],
         keys = [],
-            meteorImage = new Image();
+        meteorImage = new Image();
 
     context.strokeStyle = "white";
     spaceShip.src = "img/spaceship.png";
@@ -22,6 +22,8 @@
         checkShots();
         renderAllShots();
         checkMovementKeys();
+        //createMeteors();///////////
+        meteorsManager();//////////
 
         setTimeout(gameLoop, 30);
     };
@@ -126,42 +128,93 @@
 
     function Meteor(ctx, posX, posY) {
 
-            var meteor = {},
-                frame = 0;
+        var frame = 60,
+            oldPosX = posX,
+            oldPosY = posY;
+        this.x = posX;
+        this.y = posY;
 
-            meteor.width = 60;
-            meteor.height = 60;
-            meteor.image = coinImage;
+        this.width = 60;
+        this.height = 60;
+        this.image = meteorImage;
 
-            meteor.render = function (clipX) {
-                ctx.clearRect(posX, posY, meteor.width, meteor.height);
-                ctx.drawImage(
-                    this.image,
-                    clipX,
-                    0,
-                    this.width,
-                    this.height,
-                    posX,
-                    posY,
-                    this.width,
-                    this.height
-                );
-            };
+        this.render = function (clipX) {
+            ctx.clearRect(oldPosX, oldPosY, this.width, this.height);
+            ctx.drawImage(
+                this.image,
+                clipX,
+                0,
+                this.width,
+                this.height,
+                this.x,
+                this.y,
+                this.width,
+                this.height
+            );
+        };
 
-            meteor.animate = function () {
-                meteor.render(frame);
-                frame += 44;
+        this.animate = function () {
+            this.render(frame);
+            frame += 60;
 
-                if (frame >= 440) {
-                    frame = 0;
-                }
+            if (frame >= 480) {
+                //frame = 0;
+                return;
+            }
 
-                setTimeout(meteor.animate, 80);
-            };
+            setTimeout(this.animate, 80);
+        };
 
-            return meteor;
+        this.move = function () {
+            this.render(0);
+            oldPosY = this.y;
+            this.y += consts.SHIP_SPEED;
+        }       
+    }
+
+    function createMeteors() {
+        var randomX = 0| Math.random() * consts.GAME_WIDTH;
+        var newMeteor = new Meteor(context, randomX, 5);
+        allMeteors.push(newMeteor);
+        
+        setTimeout(createMeteors, 1000);
+    }   
+    createMeteors();
+    function meteorsManager() {
+        for (var i = 0, length = allMeteors.length; i < length; i++) {
+            allMeteors[i].move();
         }
 
-        //TO DO collision detector 
+        checkForShotMeteors();
+        //checkForEscapedMeteors();
     }
-})();
+
+    function checkForShotMeteors() {
+        for (var i = 0; i < allMeteors.length; i++) {
+            for (var j = 0; j < allShots.length; j++) {
+                if (allShots[j].x >= allMeteors[i].x-30 && allShots[j].x <= (allMeteors[i].x + allMeteors[i].width) &&
+                    allShots[j].y == (allMeteors[i].y + allMeteors[i].height)) {
+                    allShots.splice(j, 1);
+                    j--;
+
+                    allMeteors[i].animate();
+                    allMeteors.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
+
+    function checkForCollisionWithShip() {
+
+    }
+
+    function checkForEscapedMeteors() {
+        for (var i = 0; i < allMeteors.length; i++) {
+            if (allMeteors[i].y >= consts.GAME_HEIGHT) {
+                allMeteors.splice(i, 1);
+                i--;
+            }
+        }
+    }
+}());
