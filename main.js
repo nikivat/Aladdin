@@ -1,13 +1,19 @@
+/*jslint browser:true*/
+
 (function() {
+    'use strict';
+
     var canvas = document.getElementById("ship"),
         context = canvas.getContext("2d"),
         shipX = canvas.width / 2 - consts.SHIP_WIDTH / 2,
         shipY = canvas.height - consts.SHIP_HEIGHT - 10,
         spaceShip = new Image(),
+        meteorImage = new Image(),
         allShots = [],
         allMeteors = [],
         keys = [],
-        meteorImage = new Image();
+        shipAlive = true,
+        gameOver = false;
 
     context.strokeStyle = "white";
     spaceShip.src = "img/spaceship.png";
@@ -16,11 +22,11 @@
 
     // GAME ENGINE
 
-    function detectColusions() {
-        // shot meteor
+    function detectCollisions() {
+        // collision bullet-meteor
         for (var i = 0; i < allMeteors.length; i += 1) {
             for (var j = 0; j < allShots.length; j += 1) {
-                if ((allMeteors[i].y + consts.METEOR_HEIGHT) === (allShots[j].y - consts.SHOT_SIZE)) {
+                if ((allMeteors[i].y + consts.METEOR_HEIGHT) >= (allShots[j].y - consts.SHOT_SIZE)) {
                     if (allMeteors[i].x <= allShots[j].x) {
                         if ((allMeteors[i].x + consts.METEOR_WIDTH) >= allShots[j].x) {
                             allShots[j].destroyed = true;
@@ -32,41 +38,87 @@
             }
         }
 
+        // collision ship-meteor
+        for (var k = 0; k < allMeteors.length; k += 1) {
+            if (shipX >= allMeteors[k].x &&
+                shipX <= allMeteors[k].x + consts.METEOR_WIDTH &&
+                shipY >= allMeteors[k].y &&
+                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT) {
 
+                shipAlive = false;
+                destroyShip();
+                break;
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH &&
+                shipY >= allMeteors[k].y &&
+                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT) {
 
+                shipAlive = false;
+                destroyShip();
+                break;
+            } else if (shipX >= allMeteors[k].x &&
+                shipX <= allMeteors[k].x + consts.METEOR_WIDTH &&
+                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y &&
+                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT) {
 
+                shipAlive = false;
+                destroyShip();
+                break;
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH &&
+                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y &&
+                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT) {
 
-    }
+                shipAlive = false;
+                destroyShip();
+                break;
+            }
+        }
 
-
-    function manageScreenObjects() {
-        detectColusions();
         checkMeteors();
         checkShots();
     }
 
     window.onload = function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        manageScreenObjects();
+        detectCollisions();
+        if (shipAlive) {
+            renderShip(0);
+        }
         renderAllMeteors();
         renderAllShots();
-        renderShip();
 
         checkMovementKeys();
 
         setTimeout(gameLoop, 30);
     };
 
-    // SHIP RENDER
+    // SPACESHIP
 
-    function renderShip() {
-        context.drawImage(spaceShip, 0, 0, consts.SHIP_WIDTH, consts.SHIP_HEIGHT,
+    function renderShip(frame) {
+        context.drawImage(spaceShip, frame * consts.SHIP_WIDTH, 0, consts.SHIP_WIDTH, consts.SHIP_HEIGHT,
             shipX, shipY, consts.SHIP_WIDTH, consts.SHIP_HEIGHT);
+    }
+
+    var shipFrames = 1;
+
+    function destroyShip() {
+        context.clearRect(shipX, shipY, consts.SHIP_WIDTH, consts.SHIP_HEIGHT);
+        renderShip(shipFrames);
+        shipFrames += 1;
+
+        if (shipFrames <= 6) {
+            setTimeout(destroyShip, 1000);
+        }
     }
 
     // ON USER KEY PRESSED
 
     function checkMovementKeys() {
+        if (!shipAlive) {
+            return;
+        }
+
         if (keys[38]) {
             //go up
             if (shipY >= consts.MOVEMENT_SPEED) {
@@ -97,7 +149,7 @@
     }
 
     function checkShootingKey() {
-        if (keys[32]) {
+        if (keys[32] && shipAlive) {
             fire();
         }
 
@@ -164,40 +216,44 @@
         this.y = y;
         this.destroyed = false;
 
-        this.render = function() {
-            context.drawImage(meteorImage, 0, 0, consts.METEOR_WIDTH, consts.METEOR_HEIGHT,
+        this.render = function(frame) {
+            context.drawImage(meteorImage, frame * consts.METEOR_WIDTH, 0, consts.METEOR_WIDTH, consts.METEOR_HEIGHT,
                 this.x, this.y, consts.METEOR_WIDTH, consts.METEOR_HEIGHT);
         };
 
         this.move = function() {
             this.y += consts.MOVEMENT_SPEED;
         };
-
-        this.animate = function() {
-            var frames = consts.METEOR_FRAMES;
-
-            function animateSprite() {
-                context.drawImage(meteorImage, 480 - frames * consts.METEOR_WIDTH, 0,
-                    consts.METEOR_WIDTH, consts.METEOR_HEIGHT, this.x, this.y, consts.METEOR_WIDTH, consts.METEOR_HEIGHT);
-
-                frames -= 1;
-                if (frames !== 0) {
-                    setTimeout(animateSprite, 500);
-                }
-            }
-        };
     }
 
     function renderAllMeteors() {
         for (var i = 0; i < allMeteors.length; i += 1) {
             allMeteors[i].move();
-            allMeteors[i].render();
+            allMeteors[i].render(0);
         }
+    }
+
+    function destroyMeteor(x, y) {
+        var meteorFrame = 1;
+
+        function animate() {
+            context.clearRect(x, y, consts.METEOR_WIDTH, consts.METEOR_HEIGHT);
+            context.drawImage(meteorImage, meteorFrame * consts.METEOR_WIDTH, 0, consts.METEOR_WIDTH, consts.METEOR_HEIGHT,
+                x, y, consts.METEOR_WIDTH, consts.METEOR_HEIGHT);
+            meteorFrame += 1;
+
+            if (meteorFrame <= 8) {
+                setTimeout(animate, 30);
+            }
+        }
+
+        animate();
     }
 
     function checkMeteors() {
         for (var i = 0; i < allMeteors.length; i += 1) {
             if (allMeteors[i].y >= consts.GAME_HEIGHT || allMeteors[i].destroyed) {
+                destroyMeteor(allMeteors[i].x, allMeteors[i].y);
                 allMeteors.splice(i, 1);
                 i--;
             }
@@ -205,7 +261,7 @@
     }
 
     function generateMeteors() {
-        if (allMeteors.length < consts.METEORS_COUNT) {
+        if (allMeteors.length < consts.METEORS_COUNT && shipAlive) {
             var randomX = Math.random() * (consts.GAME_WIDTH - consts.METEOR_WIDTH),
                 meteor = new Meteor(randomX, -60);
 
