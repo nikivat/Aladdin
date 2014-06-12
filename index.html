@@ -9,28 +9,41 @@
         margin: 0;
         padding: 0;
     }
+    #svg{
+        display: block;
+        position: absolute;
+        top:20px;
+        left: 20px;
+    }
     #wrapper {
         display: block;
         position: absolute;
-        top:0;
-        left: 0;
+        top:20px;
+        left: 20px;
         width: 313px;
         height: 500px;
-        border: 1px solid yellow;
+        border: 1px solid red;
+    }
+    #game-wrapper {
+        width: 400px;
+        height: 570px;
+        border: 3px solid yellow;
     }
     </style>
 </head>
 
 <body>
-    <svg id="svg" width="313" height="500"></svg>
-    <div id="wrapper">
-        <canvas id="ship" width="313" height="500"></canvas>
-    </div>
+    <div id="game-wrapper">
+        <svg id="svg" width="313" height="500"></svg>
+        <div id="wrapper">
+            <canvas id="ship" width="313" height="500"></canvas>
+        </div>
 
-    <script type="text/javascript" src="bower_components/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="config.js"></script>
-    <script type="text/javascript" src="background.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="bower_components/raphael/raphael-min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+        <script type="text/javascript" src="background.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </div>
 </body>
 
 </html>
