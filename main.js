@@ -12,8 +12,8 @@
         allShots = [],
         allMeteors = [],
         keys = [],
-        shipAlive = true,
-        gameOver = false;
+        restart = document.getElementById('restart'),
+        shipAlive = true;
 
     context.strokeStyle = "white";
     spaceShip.src = "img/spaceship.png";
@@ -84,14 +84,14 @@
             destroyMeteor(allMeteors[j].x, allMeteors[j].y);
         }
 
-        context.fillStyle = "#D3FF87";
+        context.fillStyle = "#D3FFEB";
         context.font = '40px san-serif';
         context.textBaseline = 'bottom';
         var text = 'Game over !',
             i = 1;
 
         function drawFinalText() {
-            context.fillText(text.substr(0, i), 50, 50);
+            context.fillText(text.substr(0, i), 50, 200);
             i += 1;
 
             if (i <= text.length) {
@@ -102,7 +102,7 @@
         drawFinalText();
     }
 
-    window.onload = function gameLoop() {
+    function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         detectCollisions();
         renderShip(0);
@@ -114,9 +114,17 @@
             setTimeout(gameLoop, 30);
         } else {
             gameEnd();
+            setTimeout(function() {
+                restart.style.zIndex = '100';
+            }, 3000);
         }
     };
 
+    window.onload = gameLoop();
+
+    restart.addEventListener('click', function() {
+        location.reload();
+    });
     // SPACESHIP
 
     function renderShip(frame) {
