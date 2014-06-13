@@ -3,17 +3,23 @@
     padding: 0;
     font-family:'Comic Sans MS', 'Consolas', 'Arial';
     font-weight: bold;
-    color: #D3FFEB;
+    color: #740850;
 }
+
+#restart {
+	color: mediumslateblue;
+}
+
 #svg {
     display: block;
     position: absolute;
-    top:20px;
-    left: 20px;
+    top:23px;
+    left: 23px;
 }
 #wrapper {
     display: block;
     position: absolute;
+	padding: 0;
     top:20px;
     left: 20px;
     width: 313px;
@@ -27,7 +33,7 @@
     top: 20px;
     width: 400px;
     height: 570px;
-    border: 10px outset gray;
+    border: 5px outset gray;
     background-image: url('img/game-back.jpeg');
 }
 input[type=button] {
@@ -46,12 +52,12 @@ input[type=button] {
     left: 55px;
     width: 150px;
     height: 15px;
-    border: 2px solid #D3FFEB;
+    border: 2px solid #740850;
 }
 #fuel div {
     height: 9px;
     margin: 3px;
-    background-color: cornflowerblue;
+    background-color: mediumslateblue;
     z-index: 100;
 }
 span {
@@ -67,8 +73,8 @@ span:last-of-type {
 #reload {
     display: block;
     position: absolute;
-    top:20px;
-    left: 20px;
+    top:23px;
+    left: 23px;
     width: 313px;
     height: 500px;
 }
