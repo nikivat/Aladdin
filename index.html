@@ -8,12 +8,18 @@
 </head>
 
 <body>
-    <input type="button" value="Restart" id="restart" />
     <div id="game-wrapper">
+        <input type="button" value="Restart" id="restart" />
         <svg id="svg" width="313" height="500"></svg>
         <div id="wrapper">
             <canvas id="ship" width="313" height="500"></canvas>
         </div>
+        <span>Fuel</span>
+        <div id="fuel">
+            <div></div>
+        </div>
+        <span id="distance">Distance: 0.0 km</span>
+        <div id="distance-container"></div>
 
         <script type="text/javascript" src="bower_components/raphael/raphael-min.js"></script>
         <script type="text/javascript" src="config.js"></script>

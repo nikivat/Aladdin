@@ -1,6 +1,9 @@
 * {
     margin: 0;
     padding: 0;
+    font-family:'Comic Sans MS', 'Consolas', 'Arial';
+    font-weight: bold;
+    color: #D3FFEB;
 }
 #svg {
     display: block;
@@ -15,12 +18,16 @@
     left: 20px;
     width: 313px;
     height: 500px;
-    border: 1px solid red;
+    border: 3px solid gray;
 }
 #game-wrapper {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 20px;
     width: 400px;
     height: 570px;
-    border: 10px outset;
+    border: 10px outset gray;
     background-image: url('img/game-back.jpeg');
 }
 input[type=button] {
@@ -30,8 +37,30 @@ input[type=button] {
     width: 120px;
     height: 50px;
     background-color: #040004;
-    color: #D3FFEB;
-    font-family:'Comic Sans MS', 'Consolas', 'Arial';
-    font-weight: bold;
     font-size: 20px;
+    border: 5px outset;
+}
+#fuel {
+    position: relative;
+    top: 540px;
+    left: 55px;
+    width: 150px;
+    height: 15px;
+    border: 2px solid #D3FFEB;
+}
+#fuel div {
+    height: 9px;
+    margin: 3px;
+    background-color: red;
+    z-index: 100;
+}
+span {
+    position: absolute;
+    top: 538px;
+    left: 20px;
+}
+span:last-of-type {
+    position: absolute;
+    top: 538px;
+    left: 220px;
 }

@@ -1,6 +1,7 @@
-Space Invaders
+Space Runner
 ==============
 
-This ia a simple game, demonstrating the Canvas and SVG frameworks.
+This is a simple game, demonstrating  Canvas and SVG frameworks.
 
-The project is part of the "JavaScript UI & DOM" course curriculum, at the Telerik Software Academy - teamwork assignment for Team "Aladdin'2014".
+The project is part of  "JavaScript UI & DOM" course curriculum, 
+at the Telerik Software Academy - teamwork assignment for Team "Aladdin'2014".

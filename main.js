@@ -12,6 +12,9 @@
         allShots = [],
         allMeteors = [],
         keys = [],
+        distance = document.getElementById('distance'),
+        currDistance = 0.0,
+        fuel = document.getElementById('fuel').getElementsByTagName('div')[0],
         restart = document.getElementById('restart'),
         shipAlive = true;
 
@@ -21,6 +24,40 @@
 
 
     // GAME ENGINE
+    window.onload = function() {
+        gameLoop();
+
+        document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
+
+        shipFuel();
+        calcDistance();
+    };
+
+    function shipFuel() {
+        var fuelValue = parseInt(fuel.style.width);
+        fuelValue -= 0.5;
+        if (fuelValue < 0) {
+            fuelValue = 0;
+            shipAlive = false;
+        }
+
+        fuel.style.width = fuelValue + 'px';
+        if (shipAlive) {
+            setTimeout(shipFuel, 1000);
+        }
+    }
+
+    function calcDistance() {
+        if (!shipAlive) {
+            return;
+        }
+
+        currDistance += 0.1;
+        var num = currDistance.toFixed(1);
+        distance.innerHTML = 'Distance: ' + num + ' km';
+
+        setTimeout(calcDistance, 100);
+    }
 
     function detectCollisions() {
         // collision bullet-meteor
@@ -80,6 +117,7 @@
     }
 
     function gameEnd() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
         for (var j = 0; j < allMeteors.length; j += 1) {
             destroyMeteor(allMeteors[j].x, allMeteors[j].y);
         }
@@ -120,11 +158,10 @@
         }
     }
 
-    window.onload = gameLoop();
-
     restart.addEventListener('click', function() {
         location.reload();
     });
+
     // SPACESHIP
 
     function renderShip(frame) {
