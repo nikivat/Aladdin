@@ -1,5 +1,5 @@
 Space Runner
-==============
+============
 
 This is a simple game, demonstrating  Canvas and SVG frameworks.
 

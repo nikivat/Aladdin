@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Spce Runner - JavaScript Game</title>
+		<link rel="stylesheet" type="text/css" href="styles/space-runner-styles.css" />
+	</head>
+	<body>
+		<div id="game-wrapper">
+			<input type="button" value="Restart" id="restart" />
+			<svg id="svg" width="313" height="500"></svg>
+			<div id="wrapper">
+				<canvas id="ship" width="313" height="500"></canvas>
+			</div>
+			<canvas id="reload" width="313" height="500"></canvas>
+			<span>Fuel</span>
+			<div id="fuel">
+				<div></div>
+			</div>
+			<span id="distance">Distance: 0.0 km</span>
+			<div id="distance-container"></div>
+
+			<script type="text/javascript" src="libs/raphael-min.js"></script>
+			<script type="text/javascript" src="scripts/config.js"></script>
+			<script type="text/javascript" src="scripts/background.js"></script>
+			<script type="text/javascript" src="scripts/main.js"></script>
+		</div>
+	</body>
+</html>
