@@ -24,13 +24,33 @@
 
 
     // GAME ENGINE
+
     window.onload = function() {
-        gameLoop();
+        context.fillStyle = "#D3FFEB";
+        context.font = '25px san-serif';
+        context.textBaseline = 'bottom';
+        var text = 'Press ENTER to start!',
+            i = 1;
 
-        document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
+        function drawStartText() {
+            context.fillText(text.substr(0, i), 45, 260);
+            i += 1;
 
-        shipFuel();
-        calcDistance();
+            if (i <= text.length) {
+                setTimeout(drawStartText, 100);
+            }
+        }
+
+        drawStartText();
+
+        addEventListener('keydown', function(e) {
+            if (e.keyCode == 13) {
+                gameLoop();
+                document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
+                shipFuel();
+                calcDistance();
+            }
+        });
     };
 
     function shipFuel() {
