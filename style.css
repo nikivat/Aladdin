@@ -20,7 +20,8 @@
 #game-wrapper {
     width: 400px;
     height: 570px;
-    border: 3px solid yellow;
+    border: 10px outset;
+    background-image: url('img/game-back.jpeg');
 }
 input[type=button] {
     position: absolute;
@@ -30,7 +31,7 @@ input[type=button] {
     height: 50px;
     background-color: #040004;
     color: #D3FFEB;
-    font-family: 'Comic Sans MS', 'Consolas', 'Arial';
+    font-family:'Comic Sans MS', 'Consolas', 'Arial';
     font-weight: bold;
     font-size: 20px;
 }

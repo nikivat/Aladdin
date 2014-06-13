@@ -118,7 +118,7 @@
                 restart.style.zIndex = '100';
             }, 3000);
         }
-    };
+    }
 
     window.onload = gameLoop();
 
