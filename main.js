@@ -3,14 +3,16 @@
 (function() {
     'use strict';
 
-    var canvas = document.getElementById("ship"),
-        context = canvas.getContext("2d"),
+    var canvas = document.getElementById('ship'),
+        context = canvas.getContext('2d'),
         shipX = canvas.width / 2 - consts.SHIP_WIDTH / 2,
         shipY = canvas.height - consts.SHIP_HEIGHT - 10,
         spaceShip = new Image(),
         meteorImage = new Image(),
         allShots = [],
+        reload = [],
         allMeteors = [],
+        reloadImg = new Image(),
         keys = [],
         distance = document.getElementById('distance'),
         currDistance = 0.0,
@@ -18,15 +20,101 @@
         restart = document.getElementById('restart'),
         shipAlive = true;
 
-    context.strokeStyle = "white";
-    spaceShip.src = "img/spaceship.png";
+    context.strokeStyle = 'white';
+    spaceShip.src = 'img/spaceship.png';
     meteorImage.src = 'img/meteorit.png';
-
+    reloadImg.src = 'img/reload.png';
 
     // GAME ENGINE
 
+    // reload
+    var reloadCanvas = document.getElementById('reload'),
+        ctxReload = reloadCanvas.getContext('2d'),
+        randomX = Math.random() * (consts.GAME_WIDTH - 30);
+
+    function Reload() {
+        this.x = randomX;
+        this.y = -40;
+        this.image = reloadImg;
+        this.direction = 'R';
+
+        this.render = function() {
+            ctxReload.drawImage(this.image, this.x, this.y);
+        };
+
+        this.move = function() {
+            this.y += 4;
+            var rightEnd = this.x + 30;
+            if (this.direction === 'R') {
+                if ((rightEnd += 4) < consts.GAME_WIDTH) {
+                    this.x += 4;
+                } else {
+                    this.direction = 'L';
+                }
+            } else {
+                if ((this.x -= 4) > 0) {
+                    this.x -= 4;
+                } else {
+                    this.direction = 'R';
+                }
+            }
+        };
+    }
+
+    function checkReload() {
+        if (reload.length > 0) {
+            if (reload[0].y > consts.GAME_HEIGHT) {
+                reload.pop();
+                return;
+            }
+
+            if (reload[0].x >= shipX &&
+                reload[0].x <= shipX + 30 &&
+                reload[0].y >= shipY &&
+                reload[0].y <= shipY + 40) {
+
+                reload.pop();
+                fuel.style.width = '144px';
+                return;
+            } else if (reload[0].x + 30 >= shipX &&
+                reload[0].x + 30 <= shipX + 30 &&
+                reload[0].y >= shipY &&
+                reload[0].y <= shipY + 40) {
+
+                reload.pop();
+                fuel.style.width = '144px';
+                return;
+            } else if (reload[0].x >= shipX &&
+                reload[0].x <= shipX + 30 &&
+                reload[0].y + 30 >= shipY &&
+                reload[0].y + 30 <= shipY + 40) {
+
+                reload.pop();
+                fuel.style.width = '144px';
+                return;
+            } else if (reload[0].x + 30 >= shipX &&
+                reload[0].x + 30 <= shipX + 30 &&
+                reload[0].y + 30 >= shipY &&
+                reload[0].y + 30 <= shipY + 40) {
+
+                reload.pop();
+                fuel.style.width = '144px';
+                return;
+            }
+        }
+    }
+
+    setInterval(function() {
+        if (reload.length === 0) {
+            var r = new Reload();
+            reload.push(r);
+        }
+    }, 16000);
+
+    // end of reload
+
     window.onload = function() {
-        context.fillStyle = "#D3FFEB";
+        context.fillStyle = '#D3FFEB';
         context.font = '25px san-serif';
         context.textBaseline = 'bottom';
         var text = 'Press ENTER to start!',
@@ -42,30 +130,16 @@
         }
 
         drawStartText();
-
-        addEventListener('keydown', function(e) {
-            if (e.keyCode == 13) {
-                gameLoop();
-                document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
-                shipFuel();
-                calcDistance();
-            }
-        });
     };
 
-    function shipFuel() {
-        var fuelValue = parseInt(fuel.style.width);
-        fuelValue -= 0.5;
-        if (fuelValue < 0) {
-            fuelValue = 0;
-            shipAlive = false;
+    addEventListener('keydown', function(e) {
+        if (e.keyCode == 13) {
+            gameLoop();
+            document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
+            shipFuel();
+            calcDistance();
         }
-
-        fuel.style.width = fuelValue + 'px';
-        if (shipAlive) {
-            setTimeout(shipFuel, 1000);
-        }
-    }
+    });
 
     function calcDistance() {
         if (!shipAlive) {
@@ -142,7 +216,7 @@
             destroyMeteor(allMeteors[j].x, allMeteors[j].y);
         }
 
-        context.fillStyle = "#D3FFEB";
+        context.fillStyle = '#D3FFEB';
         context.font = '40px san-serif';
         context.textBaseline = 'bottom';
         var text = 'Game over !',
@@ -161,6 +235,14 @@
     }
 
     function gameLoop() {
+        ctxReload.clearRect(0, 0, reloadCanvas.width, reloadCanvas.height);
+        if (reload[0]) {
+            reload[0].render();
+            reload[0].move();
+        }
+
+        checkReload();
+
         context.clearRect(0, 0, canvas.width, canvas.height);
         detectCollisions();
         renderShip(0);
@@ -198,6 +280,20 @@
 
         if (shipFrames <= 6) {
             setTimeout(destroyShip, 400);
+        }
+    }
+
+    function shipFuel() {
+        var fuelValue = parseInt(fuel.style.width);
+        fuelValue -= 3;
+        if (fuelValue < 0) {
+            fuelValue = 0;
+            shipAlive = false;
+        }
+
+        fuel.style.width = fuelValue + 'px';
+        if (shipAlive) {
+            setTimeout(shipFuel, 1000);
         }
     }
 

@@ -51,7 +51,7 @@ input[type=button] {
 #fuel div {
     height: 9px;
     margin: 3px;
-    background-color: red;
+    background-color: cornflowerblue;
     z-index: 100;
 }
 span {
@@ -63,4 +63,12 @@ span:last-of-type {
     position: absolute;
     top: 538px;
     left: 220px;
+}
+#reload {
+    display: block;
+    position: absolute;
+    top:20px;
+    left: 20px;
+    width: 313px;
+    height: 500px;
 }
