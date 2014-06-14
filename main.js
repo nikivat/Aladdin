@@ -112,6 +112,8 @@
     }, 16000);
 
     // end of reload
+    
+    var endOfText = false;
 
     window.onload = function() {
         context.fillStyle = '#D3FFEB';
@@ -126,6 +128,8 @@
 
             if (i <= text.length) {
                 setTimeout(drawStartText, 100);
+            } else {
+                endOfText = true;
             }
         }
 
@@ -133,7 +137,7 @@
     };
 
     addEventListener('keydown', function(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode == 13 && endOfText) {
             gameLoop();
             document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
             shipFuel();
@@ -215,6 +219,8 @@
         for (var j = 0; j < allMeteors.length; j += 1) {
             destroyMeteor(allMeteors[j].x, allMeteors[j].y);
         }
+
+        allMeteors = [];
 
         context.fillStyle = '#D3FFEB';
         context.font = '40px san-serif';
