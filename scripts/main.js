@@ -18,7 +18,10 @@
         currDistance = 0.0,
         fuel = document.getElementById('fuel').getElementsByTagName('div')[0],
         restart = document.getElementById('restart'),
-        shipAlive = true;
+        shipAlive = true,
+		score = document.getElementById('score'),
+		currentScore = 0,
+		bonus = 0;
 
     context.strokeStyle = 'white';
     spaceShip.src = 'img/spaceship.png';
@@ -138,6 +141,7 @@
             document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
             shipFuel();
             calcDistance();
+			calculateScore();
         }
     });
 
@@ -457,5 +461,19 @@
     }
 
     generateMeteors();
+	
+	// SCORE
+	function calculateScore() {
+		if (!shipAlive) {
+            return;
+        }
+		
+		currentScore = Math.floor(currDistance * 10);
+
+		score.innerHTML = 'Score<br />' + currentScore +
+							'<br />Bonus<br />' + bonus;
+
+		setTimeout(calculateScore, 100);
+	}	
 
 }());
