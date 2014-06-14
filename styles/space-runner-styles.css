@@ -16,6 +16,7 @@
     top:23px;
     left: 23px;
 }
+
 #wrapper {
     display: block;
     position: absolute;
@@ -36,6 +37,7 @@
     border: 5px outset gray;
     background-image: url('img/game-back.jpeg');
 }
+
 input[type=button] {
     position: absolute;
     top: 250px;
@@ -46,6 +48,7 @@ input[type=button] {
     font-size: 20px;
     border: 5px outset;
 }
+
 #fuel {
     position: relative;
     top: 540px;
@@ -54,22 +57,35 @@ input[type=button] {
     height: 15px;
     border: 2px solid #740850;
 }
+
 #fuel div {
     height: 9px;
     margin: 3px;
     background-color: mediumslateblue;
     z-index: 100;
 }
+
+#score {
+	width: 45px;
+	height: 100px;
+	border: 2px solid #740850;
+	top: 20px;
+	left: 345px;
+	text-align: center;
+}
+
 span {
     position: absolute;
     top: 538px;
     left: 20px;
 }
+
 span:last-of-type {
     position: absolute;
     top: 538px;
     left: 220px;
 }
+
 #reload {
     display: block;
     position: absolute;
