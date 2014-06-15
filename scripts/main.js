@@ -22,7 +22,34 @@
         score = document.getElementById('score'),
         currentScore = 0,
         bonus = 0,
-        countEnter;
+        countEnter,
+        shootSound, meteorSound, gameSound, shipSound;
+
+    soundManager.onready(function() {
+        shootSound = soundManager.createSound({
+            url: 'audio/shoot.wav'
+        });
+
+        meteorSound = soundManager.createSound({
+            url: 'audio/meteor.wav'
+        });
+
+        shipSound = soundManager.createSound({
+            url: 'audio/ship.wav'
+        });
+
+        gameSound = soundManager.createSound({
+            url: 'audio/game.wav'
+        });
+    });
+
+    function loopSound(sound) {
+        sound.play({
+            onfinish: function() {
+                loopSound(sound);
+            }
+        });
+    }
 
     context.strokeStyle = 'white';
     spaceShip.src = 'img/spaceship.png';
@@ -120,6 +147,7 @@
     var endOfText = false;
 
     window.onload = function() {
+        loopSound(gameSound);
         context.fillStyle = '#D3FFEB';
         context.font = '25px san-serif';
         context.textBaseline = 'bottom';
@@ -179,7 +207,7 @@
                 }
             }
         }
-		
+
         // collision ship-meteor
         for (var k = 0; k < allMeteors.length; k += 1) {
             if (shipX >= allMeteors[k].x + consts.COLLISION_PIXELS &&
@@ -190,10 +218,10 @@
                 shipAlive = false;
                 destroyShip();
                 break;
-            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x  + consts.COLLISION_PIXELS &&
-                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH  - consts.COLLISION_PIXELS &&
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x + consts.COLLISION_PIXELS &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH - consts.COLLISION_PIXELS &&
                 shipY >= allMeteors[k].y + consts.COLLISION_PIXELS &&
-                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS ) {
+                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS) {
 
                 shipAlive = false;
                 destroyShip();
@@ -206,8 +234,8 @@
                 shipAlive = false;
                 destroyShip();
                 break;
-            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x  + consts.COLLISION_PIXELS &&
-                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH  - consts.COLLISION_PIXELS &&
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x + consts.COLLISION_PIXELS &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH - consts.COLLISION_PIXELS &&
                 shipY + consts.SHIP_HEIGHT >= allMeteors[k].y + consts.COLLISION_PIXELS &&
                 shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS) {
 
@@ -265,8 +293,9 @@
         checkMovementKeys();
 
         if (shipAlive) {
-            setTimeout(gameLoop, 30);
+            setTimeout(gameLoop, consts.GAME_SPEED);
         } else {
+            shipSound.play();
             gameEnd();
             setTimeout(function() {
                 restart.style.zIndex = '100';
@@ -393,9 +422,10 @@
     }
 
     function fire() {
-        if (allShots.length < 5) {
+        if (allShots.length < consts.SHOTS_COUNT) {
             var shot = new Shot(shipX + consts.SHIP_WIDTH / 2, shipY);
             allShots.unshift(shot);
+            shootSound.play();
         }
     }
 
@@ -452,6 +482,10 @@
     function checkMeteors() {
         for (var i = 0; i < allMeteors.length; i += 1) {
             if (allMeteors[i].y >= consts.GAME_HEIGHT || allMeteors[i].destroyed) {
+                if (allMeteors[i].destroyed) {
+                    meteorSound.play();
+                }
+
                 destroyMeteor(allMeteors[i].x, allMeteors[i].y);
                 allMeteors.splice(i, 1);
                 i--;
