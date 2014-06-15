@@ -19,9 +19,10 @@
         fuel = document.getElementById('fuel').getElementsByTagName('div')[0],
         restart = document.getElementById('restart'),
         shipAlive = true,
-		score = document.getElementById('score'),
-		currentScore = 0,
-		bonus = 0;
+        score = document.getElementById('score'),
+        currentScore = 0,
+        bonus = 0,
+        countEnter;
 
     context.strokeStyle = 'white';
     spaceShip.src = 'img/spaceship.png';
@@ -115,7 +116,7 @@
     }, 16000);
 
     // end of reload
-    
+
     var endOfText = false;
 
     window.onload = function() {
@@ -133,6 +134,7 @@
                 setTimeout(drawStartText, 100);
             } else {
                 endOfText = true;
+                countEnter = 0;
             }
         }
 
@@ -140,16 +142,17 @@
     };
 
     addEventListener('keydown', function(e) {
-        if (e.keyCode == 13 && endOfText) {
+        countEnter++;
+        if (e.keyCode == 13 && endOfText && countEnter === 1) {
             gameLoop();
             document.getElementById('fuel').getElementsByTagName('div')[0].style.width = '144px';
-            shipFuel();
-            calcDistance();
-			calculateScore();
+            calculateFuel();
+            calculateDistance();
+            calculateScore();
         }
     });
 
-    function calcDistance() {
+    function calculateDistance() {
         if (!shipAlive) {
             return;
         }
@@ -158,7 +161,7 @@
         var num = currDistance.toFixed(1);
         distance.innerHTML = 'Distance: ' + num + ' km';
 
-        setTimeout(calcDistance, 100);
+        setTimeout(calculateDistance, 100);
     }
 
     function detectCollisions() {
@@ -219,6 +222,7 @@
     }
 
     function gameEnd() {
+        endOfText = false;
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (var j = 0; j < allMeteors.length; j += 1) {
             destroyMeteor(allMeteors[j].x, allMeteors[j].y);
@@ -293,7 +297,7 @@
         }
     }
 
-    function shipFuel() {
+    function calculateFuel() {
         var fuelValue = parseInt(fuel.style.width);
         fuelValue -= 3;
         if (fuelValue < 0) {
@@ -303,7 +307,7 @@
 
         fuel.style.width = fuelValue + 'px';
         if (shipAlive) {
-            setTimeout(shipFuel, 1000);
+            setTimeout(calculateFuel, 1000);
         }
     }
 
@@ -467,19 +471,20 @@
     }
 
     generateMeteors();
-	
-	// SCORE
-	function calculateScore() {
-		if (!shipAlive) {
+
+    // SCORE
+
+    function calculateScore() {
+        if (!shipAlive) {
             return;
         }
-		
-		currentScore = Math.floor(currDistance * 10);
 
-		score.innerHTML = 'Score<br />' + currentScore +
-							'<br />Bonus<br />' + bonus;
+        currentScore = Math.floor(currDistance * 10);
 
-		setTimeout(calculateScore, 100);
-	}	
+        score.innerHTML = 'Score<br />' + currentScore +
+            '<br />Bonus<br />' + bonus;
+
+        setTimeout(calculateScore, 100);
+    }
 
 }());
