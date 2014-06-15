@@ -27,19 +27,19 @@
 
     soundManager.onready(function() {
         shootSound = soundManager.createSound({
-            url: 'audio/shoot.wav'
+            url: './audio/shoot.wav'
         });
 
         meteorSound = soundManager.createSound({
-            url: 'audio/meteor.wav'
+            url: './audio/meteor.wav'
         });
 
         shipSound = soundManager.createSound({
-            url: 'audio/ship.wav'
+            url: './audio/ship.wav'
         });
 
         gameSound = soundManager.createSound({
-            url: 'audio/game.wav'
+            url: './audio/game.wav'
         });
     });
 
@@ -52,9 +52,9 @@
     }
 
     context.strokeStyle = 'white';
-    spaceShip.src = 'img/spaceship.png';
-    meteorImage.src = 'img/meteorit.png';
-    reloadImg.src = 'img/reload.png';
+    spaceShip.src = './img/spaceship.png';
+    meteorImage.src = './img/meteorit.png';
+    reloadImg.src = './img/reload.png';
 
     // GAME ENGINE
 
