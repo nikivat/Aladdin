@@ -179,37 +179,37 @@
                 }
             }
         }
-
+		
         // collision ship-meteor
         for (var k = 0; k < allMeteors.length; k += 1) {
-            if (shipX >= allMeteors[k].x &&
-                shipX <= allMeteors[k].x + consts.METEOR_WIDTH &&
-                shipY >= allMeteors[k].y &&
-                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT) {
+            if (shipX >= allMeteors[k].x + consts.COLLISION_PIXELS &&
+                shipX <= allMeteors[k].x + consts.METEOR_WIDTH - consts.COLLISION_PIXELS &&
+                shipY >= allMeteors[k].y + consts.COLLISION_PIXELS &&
+                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS) {
 
                 shipAlive = false;
                 destroyShip();
                 break;
-            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x &&
-                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH &&
-                shipY >= allMeteors[k].y &&
-                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT) {
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x  + consts.COLLISION_PIXELS &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH  - consts.COLLISION_PIXELS &&
+                shipY >= allMeteors[k].y + consts.COLLISION_PIXELS &&
+                shipY <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS ) {
 
                 shipAlive = false;
                 destroyShip();
                 break;
-            } else if (shipX >= allMeteors[k].x &&
-                shipX <= allMeteors[k].x + consts.METEOR_WIDTH &&
-                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y &&
-                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT) {
+            } else if (shipX >= allMeteors[k].x + consts.COLLISION_PIXELS &&
+                shipX <= allMeteors[k].x + consts.METEOR_WIDTH - consts.COLLISION_PIXELS &&
+                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y + consts.COLLISION_PIXELS &&
+                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS) {
 
                 shipAlive = false;
                 destroyShip();
                 break;
-            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x &&
-                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH &&
-                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y &&
-                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT) {
+            } else if (shipX + consts.SHIP_WIDTH >= allMeteors[k].x  + consts.COLLISION_PIXELS &&
+                shipX + consts.SHIP_WIDTH <= allMeteors[k].x + consts.METEOR_WIDTH  - consts.COLLISION_PIXELS &&
+                shipY + consts.SHIP_HEIGHT >= allMeteors[k].y + consts.COLLISION_PIXELS &&
+                shipY + consts.SHIP_HEIGHT <= allMeteors[k].y + consts.METEOR_HEIGHT - consts.COLLISION_PIXELS) {
 
                 shipAlive = false;
                 destroyShip();
@@ -393,7 +393,7 @@
     }
 
     function fire() {
-        if (allShots.length < 3) {
+        if (allShots.length < 5) {
             var shot = new Shot(shipX + consts.SHIP_WIDTH / 2, shipY);
             allShots.unshift(shot);
         }

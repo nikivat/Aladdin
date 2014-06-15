@@ -9,4 +9,5 @@ var consts = {
     METEORS_COUNT: 6,
     GAME_WIDTH: 313,
     GAME_HEIGHT: 500,
+	COLLISION_PIXELS: 6,
 };
